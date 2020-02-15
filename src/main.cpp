@@ -14,12 +14,14 @@
 */
 #include <Arduino.h>
 #include "MyNetwork.h"
+#include "MySensor.h"
 
 MyNetwork network;
+MySensor sensor;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
@@ -31,4 +33,5 @@ void setup()
 void loop()
 {
   network.loop();
+  sensor.sample();
 }
