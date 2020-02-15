@@ -14,7 +14,7 @@ public:
     String sample();
     void setup();
 private: 
-    int sampleSum[SENSOR_COUNT];
+    long sampleSum[SENSOR_COUNT];
     int pins [SENSOR_COUNT];
 };
 
