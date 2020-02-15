@@ -4,17 +4,20 @@
 EthernetClient ethClient;
 PubSubClient client(ethClient);
 
+// ---------------------------------------------------------
 // Update these with values suitable for your network.
+#define MQTT_PORT 1883
 byte mac[] = {0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED};
 IPAddress mqtt_server(192, 168, 0, 212);
 const char * device = "Power1";
 const char *topic = "/christmas/power/Power1"; 
+// ---------------------------------------------------------
 
 void MyNetwork::setup()
 {
-    Serial.println("Starting eithernet");
+    Serial.println("Starting Network");
     Ethernet.begin(mac);
-    client.setServer(mqtt_server, 1883);
+    client.setServer(mqtt_server, MQTT_PORT);
     // Allow the hardware to sort itself out
     delay(1500);
     mqtt_reconnect();
@@ -29,9 +32,18 @@ void MyNetwork::loop()
         mqtt_reconnect();
     }
     client.loop();
-    client.publish(topic, "hello world");
 }
 
+/**
+ * Method for publishing a message to MQTT
+ */
+void MyNetwork::publish(String msg) {
+  client.publish(topic,msg.c_str());
+}
+
+/**
+ * Private method for newing DHCP lease
+ */
 void MyNetwork::check_network() {
     switch (Ethernet.maintain()) {
     case 1:
@@ -66,6 +78,10 @@ void MyNetwork::check_network() {
   }
 }
 
+/**
+ * Private method for restoring  MQTT
+ * if it goes down
+ */
 void MyNetwork::mqtt_reconnect()
 {
     // Loop until we're reconnected

@@ -1,29 +1,67 @@
 #include "MySensor.h"
 
-void MySensor::sample()
+/**
+ * Initialize the sensor.  
+ */
+void MySensor::setup()
+{
+    pins[0] = A0;
+    pins[1] = A1;
+    pins[2] = A2;
+    pins[3] = A3;
+    pins[4] = A4;
+    pins[5] = A5;
+    pins[6] = A6;
+    pins[7] = A7;
+
+    for (int i = 0; i < SENSOR_COUNT; i++)
+    {
+        sampleSum[i] = 0;
+    }
+}
+ 
+/**
+ * Called within loop to take a sample.
+ * The samping process takes 500ms. 
+ * Result is a json array of the measurements
+ */
+String MySensor::sample()
 {
 
-    Serial.println("Starting Sample");
     unsigned long lastTs = millis();
     int sampleCount = 0;
-    int sampleSum = 0;
 
-    while (sampleCount < 1000)
+    while (sampleCount < 500) // 0.5 sec
     {
-        // Read the sensor when needed.
+        // Read the ssensor once per ms.
         if ((millis() - lastTs) >= 1)
         { // 1 ms samples
             lastTs = millis();
-            sampleSum += sq(analogRead(A0) - 512);
+            for (int i = 0; i < SENSOR_COUNT; i++)
+            {
+                sampleSum[i] += sq(analogRead(pins[i]) - 512);
+            }
             ++sampleCount;
         }
     }
 
-    float mean = sampleSum / sampleCount;
-    float rms = sqrt(mean);
-    float amps = (rms * VPC) / SENSATIVITY;
-    Serial.println("AMPS: " + String(amps));
+    String answer = "[";
+    for (int i = 0; i < SENSOR_COUNT; i++)
+    {
 
-    sampleCount = 0;
-    sampleSum = 0;
+        float mean = sampleSum[i] / sampleCount;
+        float rms = sqrt(mean);
+        float amps = (rms * VPC) / SENSATIVITY;
+        sampleSum[i] = 0; // Reset
+        if (isnan(amps)) {
+            amps = -1.0;
+        }
+        answer.concat(amps);
+        if (i < (SENSOR_COUNT - 1))
+        {
+            answer.concat(",");
+        }
+    }
+    answer.concat("]");
+    return answer;
 }

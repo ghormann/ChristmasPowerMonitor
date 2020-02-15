@@ -12,6 +12,7 @@ class MyNetwork
 public:
     void loop();
     void setup();
+    void publish(String msg);
 
 private:
     void mqtt_reconnect();
