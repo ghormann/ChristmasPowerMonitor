@@ -1,8 +1,21 @@
+
+#ifndef My_Network_h_
+#define My_Network_h_
+
 #include <SPI.h>
 #include <Ethernet.h>
 #include <PubSubClient.h>
 
-void mqtt_reconnect();
-void mqtt_loop();
-void mqtt_setup();
-void check_network();
+class MyNetwork
+{
+
+public:
+    void loop();
+    void setup();
+
+private:
+    void mqtt_reconnect();
+    void check_network();
+};
+
+#endif

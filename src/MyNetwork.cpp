@@ -10,7 +10,7 @@ IPAddress mqtt_server(192, 168, 0, 212);
 const char * device = "Power1";
 const char *topic = "/christmas/power/Power1"; 
 
-void mqtt_setup()
+void MyNetwork::setup()
 {
     Serial.println("Starting eithernet");
     Ethernet.begin(mac);
@@ -21,7 +21,7 @@ void mqtt_setup()
 }
 
 // This must be called inside the loop to keep conneciton alive.
-void mqtt_loop()
+void MyNetwork::loop()
 {
     check_network();
     if (!client.connected())
@@ -32,7 +32,7 @@ void mqtt_loop()
     client.publish(topic, "hello world");
 }
 
-void check_network() {
+void MyNetwork::check_network() {
     switch (Ethernet.maintain()) {
     case 1:
       //renewed fail
@@ -66,7 +66,7 @@ void check_network() {
   }
 }
 
-void mqtt_reconnect()
+void MyNetwork::mqtt_reconnect()
 {
     // Loop until we're reconnected
     while (!client.connected())

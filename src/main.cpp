@@ -15,6 +15,7 @@
 #include <Arduino.h>
 #include "MyNetwork.h"
 
+MyNetwork network;
 
 void setup()
 {
@@ -23,11 +24,11 @@ void setup()
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  mqtt_setup();
+  network.setup();
 
 }
 
 void loop()
 {
-  mqtt_loop();
+  network.loop();
 }
