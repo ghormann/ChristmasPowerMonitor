@@ -39,7 +39,13 @@ String MySensor::sample()
             lastTs = millis();
             for (int i = 0; i < SENSOR_COUNT; i++)
             {
-                sampleSum[i] += sq(analogRead(pins[i]) - 512);
+                long before = sampleSum[i];
+                // Must cast to long before squaring
+                long temp = analogRead(pins[i]) - 512;
+                sampleSum[i] += sq(temp);
+                if ( sampleSum[i] < before) {
+                    Serial.println("DEBUG: Overflow : " + String(before) + ", " + String(sampleSum[i]) + " i = " + String(i) + " cnt=" + String(sampleCount));
+                }
             }
             ++sampleCount;
         }
