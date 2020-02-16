@@ -13,6 +13,14 @@ void MySensor::setup()
     pins[5] = A5;
     pins[6] = A6;
     pins[7] = A7;
+    pins[8] = A8;
+    pins[9] = A9;
+    pins[10] = A10;
+    pins[11] = A11;
+    pins[12] = A12;
+    pins[13] = A13;
+    pins[14] = A14;
+    pins[15] = A15;
 
     for (int i = 0; i < SENSOR_COUNT; i++)
     {
@@ -31,7 +39,10 @@ String MySensor::sample()
     unsigned long lastTs = millis();
     int sampleCount = 0;
 
-    while (sampleCount < 500) // 0.5 sec
+    // One would think that 480 (mulitple of 60hz) would be best, but I found this would 
+    // report too low when compared to a Kil-A-Watt. 
+    // 500ms gives results much closer to measured actuals. 
+    while (sampleCount < 500) 
     {
         // Read the ssensor once per ms.
         if ((millis() - lastTs) >= 1)
