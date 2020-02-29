@@ -14,6 +14,7 @@ void MySensor::setup()
     pins[6] = A6;
     pins[7] = A7;
     pins[8] = A8;
+    /*
     pins[9] = A9;
     pins[10] = A10;
     pins[11] = A11;
@@ -21,6 +22,7 @@ void MySensor::setup()
     pins[13] = A13;
     pins[14] = A14;
     pins[15] = A15;
+    */
 
     for (int i = 0; i < SENSOR_COUNT; i++)
     {
