@@ -3,6 +3,7 @@ An Aduino based project for measuring AC power consumption
 and posting the results an MQTT broker. It samples up to 16 sensors every 1 second and publishes on the MQTT bus.
 
 ## Videos
+[![Realtime Display](https://i.ytimg.com/vi/ksmsWpjH3jE/hqdefault.jpg)](https://www.youtube.com/watch?v=ksmsWpjH3jE)
 [![Finished Video](https://i.ytimg.com/vi/kgoQNgluk2M/hqdefault.jpg)](https://www.youtube.com/watch?v=kgoQNgluk2M)
 [![Concept Video](https://i.ytimg.com/vi/8WGW7Ky4HIU/hqdefault.jpg)](https://www.youtube.com/watch?v=8WGW7Ky4HIU)
 
