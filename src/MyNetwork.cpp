@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "MyNetwork.h"
+#include "MyNetwork_private.h"
 
 EthernetClient ethClient;
 PubSubClient client(ethClient);
@@ -7,14 +8,17 @@ PubSubClient client(ethClient);
 // ---------------------------------------------------------
 // Update these with values suitable for your network.
 #define MQTT_PORT 1883
-byte mac[] = {0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED};
-IPAddress mqtt_server(192, 168, 0, 212);
-const char * device = "Power1";
-const char *topic = "/christmas/power/Power1"; 
+byte mac[] = MAC;
+IPAddress mqtt_server;
+const char * device = MQTT_DEVICE;
+const char * username = MQTT_USERNAME;
+const char * password = MQTT_PASSWORD;
+const char *topic = MQTT_TOPIC;
 // ---------------------------------------------------------
 
 void MyNetwork::setup()
 {
+    mqtt_server.fromString(MQTT_IP_ADDR);
     Serial.println("Starting Network");
     Ethernet.begin(mac);
     client.setServer(mqtt_server, MQTT_PORT);
@@ -90,9 +94,10 @@ void MyNetwork::mqtt_reconnect()
         Serial.println("");
         Serial.print("IP = ");
         Serial.println(Ethernet.localIP());
-        Serial.println("Attempting MQTT connection...");
+        Serial.print("Attempting MQTT connection at: " );
+        Serial.println(MQTT_IP_ADDR);
         // Attempt to connect
-        if (client.connect(device))
+        if (client.connect(device, username, password))
         {
             Serial.println("connected");
         }
