@@ -18,3 +18,7 @@ The following changes need to be made before you compile
 1. Copy include/MyNetwork_private_example.h to MyNetwork_private.h and customize. (Mac address, MQTT IP Address, MQTT Port, and MQTT Topic).
 1. Modify src/MySensor.cpp to change the pins (if desired) 
 1. Compile code with Platform.io and Visual Studio Code
+
+## Development Setup
+
+- [Building and Uploading from WSL](docs/wsl-setup.md) — PlatformIO install, USB bridging with usbipd-win, and build/upload commands
