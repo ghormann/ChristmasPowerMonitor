@@ -5,3 +5,4 @@
 .vscode/ipch
 include/MyNetwork_private.h
 PowerMonitorProject.code-workspace
+env

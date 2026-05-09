@@ -37,6 +37,12 @@ Verify the installation:
 pio --version
 ```
 
+Install the AVR platform (required for Arduino Mega 2560):
+
+```bash
+pio pkg install --global --platform atmelavr
+```
+
 ---
 
 ## 2. Connect the Arduino via USB (usbipd-win)
@@ -58,6 +64,8 @@ sudo apt-get install linux-tools-generic hwdata
 sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/*-generic/usbip 20
 ```
 
+> **Note:** You may see a warning like `usbipd not found for kernel 5.15.167.4-microsoft`. This is harmless — `usbipd` is the server daemon and is not needed inside WSL. The `usbip` client is all that's required to receive devices from Windows.
+
 ### Attach the Arduino to WSL
 
 Each time you plug in the Arduino, run the following steps.
@@ -69,14 +77,21 @@ Each time you plug in the Arduino, run the following steps.
 usbipd list
 ```
 
-You should see a device like `USB-SERIAL CH340` or `Arduino Mega 2560`. Note its `BUSID` (e.g., `2-3`).
+The Arduino Mega 2560 will appear as `USB Serial Device (COMx)` with VID `2341`. Example output:
+
+```
+BUSID  VID:PID    DEVICE                        STATE
+1-9    2341:0010  USB Serial Device (COM3)       Not shared
+```
+
+Note its `BUSID` (e.g., `1-9`).
 
 ```powershell
 # Bind it (one-time setup per device)
-usbipd bind --busid <BUSID>
+usbipd bind --busid 1-9
 
 # Attach it to WSL
-usbipd attach --wsl --busid <BUSID>
+usbipd attach --wsl --busid 1-9
 ```
 
 **In WSL**, confirm the device is visible:
@@ -129,6 +144,11 @@ pio device monitor
 ```
 
 The monitor runs at 115200 baud as configured in `platformio.ini`. Press `Ctrl+C` to exit.
+
+> **Important:** Run `pio device monitor` from the project root directory so it picks up the baud rate from `platformio.ini`. Running it from another directory will default to 9600 baud and produce garbled output. Alternatively, specify the baud rate explicitly:
+> ```bash
+> pio device monitor --baud 115200
+> ```
 
 ---
 
